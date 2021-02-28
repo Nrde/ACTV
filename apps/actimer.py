@@ -248,6 +248,9 @@ class ACTimer:
             self.cursor.setValue(False)
 
         if self.session.hasChanged():
+            self.hasExtraLap = sim_info.static.hasExtraLap
+            self.pitWindowStart = sim_info.static.PitWindowStart
+            self.pitWindowEnd = sim_info.static.PitWindowEnd
             self.numberOfLaps = sim_info.graphics.numberOfLaps
             self.numberOfLapsTimedRace = -1
             self.sessionMaxTime = -1
