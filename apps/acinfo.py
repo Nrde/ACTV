@@ -2,7 +2,7 @@ import ac
 import acsys
 import ctypes
 import math
-from .util.classes import Window, Label, Value, Colors, Font, lapTimeStart, Config
+from .util.classes import Window, Label, Value, Colors, Font, lapTimeStart, Config, Translate
 from .configuration import Configuration
 
 
@@ -245,6 +245,7 @@ class ACInfo:
         return currentVehicle
 
     def format_name(self, name, max_name_length):
+        name = Translate.drivername(name)
         space = name.find(" ")
         if space > 0:
             if len(name) > max_name_length and space + 1 < len(name):
@@ -270,28 +271,29 @@ class ACInfo:
         return name
 
     def time_splitting(self, ms, full="no"):
-        ms=abs(ms)
-        s = ms / 1000
+        ms = abs(ms)
+        s = ms // 1000
         m, s = divmod(s, 60)
         h, m = divmod(m, 60)
-        # d,h=divmod(h,24)
+
         if full == "yes":
             d = ms % 1000
             if h > 0:
-                return "{0}:{1}:{2}.{3}".format(int(h), str(int(m)).zfill(2), str(int(s)).zfill(2),
-                                                str(int(d)).zfill(3))
+                format_string = "{:0d}:{:02d}:{:02d}.{:03d}".format(h, m, s, d)
             elif m > 0:
-                return "{0}:{1}.{2}".format(int(m), str(int(s)).zfill(2), str(int(d)).zfill(3))
+                format_string = "{:0d}:{:02d}.{:03d}".format(m, s, d)
             else:
-                return "{0}.{1}".format(int(s), str(int(d)).zfill(3))
+                format_string = "{:0d}.{:03d}".format(s, d)
         else:
-            d = ms / 100 % 10
+            d = int(ms / 100 % 10)
             if h > 0:
-                return "{0}:{1}:{2}.{3}".format(int(h), str(int(m)).zfill(2), str(int(s)).zfill(2), int(d))
+                format_string = "{:0d}:{:02d}:{:02d}.{:0d}".format(h, m, s, d)
             elif m > 0:
-                return "{0}:{1}.{2}".format(int(m), str(int(s)).zfill(2), int(d))
+                format_string = "{:0d}:{:02d}.{:0d}".format(m, s, d)
             else:
-                return "{0}.{1}".format(int(s), int(d))
+                format_string = "{:0d}.{:0d}".format(s, d)
+
+        return format_string
 
     def get_sector(self,vehicle):
         splits = ac.getCurrentSplits(vehicle)
