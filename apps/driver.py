@@ -2,7 +2,7 @@ import ac
 import acsys
 import math
 import functools
-from .util.classes import Label, Value, Colors, Font
+from .util.classes import Label, Value, Colors, Font, Translate
 from .configuration import Configuration
 
 
@@ -857,30 +857,15 @@ class Driver:
                     self.set_time_stint(self.time.value, self.isLapTimeValid)
 
         if not self.isLapLabel:
-            self.fullName.setValue(ac.getDriverName(self.identifier))
+            self.fullName.setValue(Translate.drivername(ac.getDriverName(self.identifier)))
             if self.fullName.hasChanged():
                 # Reset
                 self.set_name()
                 self.bestLap = 0
                 self.bestLapServer = 0
-                '''
-                self.finished.setValue(False)
-                self.race_current_sector.setValue(0)
-                self.race_standings_sector.setValue(0)
-                self.race_gaps = []
-                self.realtime_gaps = [0] * 100
-                self.completedLaps.setValue(0)
-                self.completedLapsChanged = False
-                self.last_lap_visible_end = 0
-                self.time_highlight_end = 0
-                self.position_highlight_end = 0
-                self.inPitFromPitLane = False
-                self.hasStartedRace = False
-                self.isInPitBox.setValue(False)
-                self.isInPitChanged.setValue(False)
-                '''
 
     def format_name_tlc(self, name):
+        name = Translate.drivername(name)
         space = name.find(" ")
         if space > 0:
             name = name[space:]
@@ -890,6 +875,7 @@ class Driver:
         return name
 
     def format_name_tlc2(self, name):
+        name = Translate.drivername(name)
         first = ""
         if len(name) > 0:
             first = name[0].upper()
@@ -904,15 +890,17 @@ class Driver:
         return name
 
     def format_last_name(self, name):
+        name = Translate.drivername(name)
         space = name.find(" ")
         if space > 0:
             name = name[space:]
         name = name.strip().upper()
-        if len(name) > 9:
-            return name[:10]
+        if len(name) > 13:
+            return name[:14]
         return name
 
     def format_last_name2(self, name):
+        name = Translate.drivername(name)
         first = ""
         if len(name) > 0:
             first = name[0].upper()
@@ -925,6 +913,7 @@ class Driver:
         return name
 
     def format_first_name(self, name):
+        name = Translate.drivername(name)
         space = name.find(" ")
         if space > 0:
             name = name[:space]
