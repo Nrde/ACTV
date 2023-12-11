@@ -908,8 +908,8 @@ class Driver:
         if space > 0:
             name = first.upper() + "." + name[space:]
         name = name.strip().upper()
-        if len(name) > 9:
-            return name[:10]
+        if len(name) > 15:
+            return name[:16]
         return name
 
     def format_first_name(self, name):

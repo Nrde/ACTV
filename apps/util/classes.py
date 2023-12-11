@@ -1796,22 +1796,6 @@ class Config:
     @staticmethod
     def get_user_documents_path():
         if Config.user_documents_path is None:
-            '''
-            # Solution 1
-            file_path = os.path.join(os.path.expanduser("~"), "Documents", "Assetto Corsa", "cfg") + "/"
-            if not os.path.exists(file_path + 'race.ini'):
-                file_path = os.path.join(os.path.expandvars("%OneDrive%"), "Documents", "Assetto Corsa", "cfg") + "/"
-            if not os.path.exists(file_path + 'race.ini'):
-                file_path = 'cfg/'
-                
-            # Solution 2
-            dll = ctypes.windll.shell32
-            buf = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH + 1)
-            if dll.SHGetSpecialFolderPathW(None, buf, 0x0005, False):
-                Config.user_documents_path = buf.value
-            else:
-                ac.log("Failure!")
-            '''
             # Solution 3
             k = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
             v = winreg.QueryValueEx(k, "Personal")
@@ -1896,15 +1880,6 @@ class Config:
 
 class Font:
     # Name, size offset, support, width, font x offset
-    '''
-    fonts = [["Segoe UI", 0, None, 1.2, 0],
-             ["Noto Sans", 0, None, 1.26, 0],
-             ["Open Sans", 0, 0, 1.5, 0],
-             ["Yantramanav", 5, 0, 1.18, 0],
-             ["Signika Negative", 3, 0, 1.2, 0],
-             ["Strait", 7, 0, 1.1, 0],
-             ["Overlock", 4, 1, 1.1, 0]]
-     '''
     init = []
     font_ini = ''
     font_files = []
@@ -2225,7 +2200,7 @@ class GameData:
 # method to match "safe" name from the client to a name with umlauts or other
 # character not working 100%
 class Translate:
-    def drivername(self, name):
+    def drivername(name):
         # ac.console("acc driver:translating name: %s " % name)
         dicNames = {}
         file_path = os.path.join(os.path.dirname(__file__), 'names.txt')
