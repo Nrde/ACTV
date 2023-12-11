@@ -949,24 +949,22 @@ class Driver:
             return "{0}.{1}".format(int(s), str(int(d)).zfill(3))
 
     def format_time_realtime(self, ms):
-        prefix = "+"
-        if ms < 0:
-            prefix = "-"
+        prefix = "+" if ms >= 0 else "-"
         ms = abs(ms)
-        # time = "+"+str(time)
+
         s = ms / 1000
         m, s = divmod(s, 60)
         h, m = divmod(m, 60)
-        # d,h=divmod(h,24)
-        d = ms % 1000 / 100
-        if math.isnan(s) or math.isnan(d) or math.isnan(m) or math.isnan(h):
+
+        if math.isnan(s) or math.isnan(m) or math.isnan(h):
             return "--.-"
+
         if h > 0:
-            return prefix + "{0}:{1}:{2}.{3}".format(int(h), str(int(m)).zfill(2), str(int(s)).zfill(2), str(int(d)))
+            return "{}{:02d}:{:02d}.{}".format(prefix, int(h), int(m), int(s))
         elif m > 0:
-            return prefix + "{0}:{1}.{2}".format(int(m), str(int(s)).zfill(2), str(int(d)))
+            return "{}{:02d}.{}".format(prefix, int(m), int(s))
         else:
-            return prefix + "{0}.{1}".format(int(s), str(int(d)))
+            return "{}{}".format(prefix, int(s))
 
     def is_compact_mode(self):
         if self.isLapLabel:
