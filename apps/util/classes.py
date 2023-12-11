@@ -2221,3 +2221,20 @@ class GameData:
         if ctypes.windll.user32.GetCursorPos(ctypes.byref(pt)):
             self.cursor_x=pt.x
             self.cursor_y=pt.y
+
+# method to match "safe" name from the client to a name with umlauts or other
+# character not working 100%
+class Translate:
+    def drivername(self, name):
+        # ac.console("acc driver:translating name: %s " % name)
+        dicNames = {}
+        file_path = os.path.join(os.path.dirname(__file__), 'names.txt')
+        with open(file_path, 'r') as file:
+            for line in file:
+                key, value = line.strip().split(':')
+                dicNames[key.lower()] = value
+
+        lower_name = name.lower()
+        # ac.log("ACC Driver:translating name: %s " % dicNames.get(lower_name, name))
+        # return dicNames.get(lower_name, name).upper()
+        return dicNames.get(lower_name, name)
